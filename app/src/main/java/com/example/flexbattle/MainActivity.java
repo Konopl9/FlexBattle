@@ -1,18 +1,13 @@
 package com.example.flexbattle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-
-import java.sql.SQLOutput;
 
 public class MainActivity extends Activity {
 
@@ -25,7 +20,7 @@ public class MainActivity extends Activity {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setOnTouchListenerToMainMenuButtons(){
+    private void setOnTouchListenerToMainMenuButtons() {
         final Button soloPlayButton = findViewById(R.id.btn_soloPlay);
         final Button pvpPlayButton = findViewById(R.id.btn_pvpPlay);
         soloPlayButton.setOnTouchListener(new View.OnTouchListener() {
