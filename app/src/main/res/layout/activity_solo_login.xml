@@ -36,41 +36,5 @@
         tools:ignore="HardcodedText"
         tools:targetApi="jelly_bean" />
 
-    <Button
-        android:id="@+id/btn_soloPlay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_button_transparent"
-        android:fontFamily="@font/gothambold"
-        android:text="Solo play"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textColor="#ffffff"
-        android:paddingBottom="20dp"
-        android:textSize="30sp"
-        tools:ignore="HardcodedText"
-        tools:targetApi="o" />
-
-    <Button
-        android:id="@+id/btn_pvpPlay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_button_transparent"
-        android:fontFamily="@font/gothambold"
-        android:text="Battle with friend"
-        android:paddingBottom="50dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        tools:ignore="HardcodedText"
-        tools:targetApi="jelly_bean" />
-
+    
 </LinearLayout>
