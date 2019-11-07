@@ -5,6 +5,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/night_bg"
     android:orientation="vertical"
+    android:id="@+id/mainLayout"
     tools:context=".MainActivity">
 
     <TextView
