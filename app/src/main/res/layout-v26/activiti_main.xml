@@ -70,7 +70,7 @@
         android:paddingVertical="10dp"
         android:text="Battle with friend"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textColor="#ffffff"
+        android:textColor="@drawable/button_text_color"
         android:textSize="40sp"
         tools:ignore="HardcodedText"
         tools:targetApi="jelly_bean" />

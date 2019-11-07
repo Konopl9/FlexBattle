@@ -27,12 +27,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // make status bar transparent
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activiti_main);
         setOnTouchListenerToMainMenuButtons();
         setGreetingTextByTime();
-
-
     }
 
     @SuppressLint("NewApi")
@@ -89,4 +87,5 @@ public class MainActivity extends Activity {
             }
         });
     }
+
 }

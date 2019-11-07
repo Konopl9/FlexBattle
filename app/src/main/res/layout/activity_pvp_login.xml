@@ -1,9 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PvPLoginActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/night_bg"
+    android:gravity="top"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/gameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:fontFamily="@font/gothammedium"
+        android:text="Flex Battle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        android:textColor="#ffffff"
+        tools:ignore="HardcodedText"
+        tools:targetApi="jelly_bean" />
+
+    <TextView
+        android:id="@+id/player1Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gothammedium"
+        android:text="Player 1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#ffffff"
+        tools:ignore="HardcodedText"
+        tools:targetApi="jelly_bean" />
+
+    <EditText
+        android:id="@+id/loginInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_person_black_24dp"
+        android:drawableRight="@drawable/ic_person_black_24dp"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_lock_black_24dp"
+        android:drawableRight="@drawable/ic_lock_black_24dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <TextView
+        android:id="@+id/player2Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gothammedium"
+        android:text="Player 2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#ffffff"
+        tools:ignore="HardcodedText"
+        tools:targetApi="jelly_bean" />
+
+    <EditText
+        android:id="@+id/loginInput1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_person_black_24dp"
+        android:drawableRight="@drawable/ic_person_black_24dp"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="DuplicateIds,HardcodedText" />
+
+    <EditText
+        android:id="@+id/passwordInput1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_lock_black_24dp"
+        android:drawableRight="@drawable/ic_lock_black_24dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/verifyPlayer1Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_transparent"
+            android:text="Verify player 1"
+            android:textColor="@drawable/button_text_color"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/verifyPlayer2Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_transparent"
+            android:text="Verify player 2"
+            android:textColor="@drawable/button_text_color"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/registrationButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_button_transparent"
+        android:text="PLAY"
+        android:textSize="60sp"
+        android:textColor="@drawable/button_text_color"
+        tools:ignore="HardcodedText,InefficientWeight" />
+
+</LinearLayout>
