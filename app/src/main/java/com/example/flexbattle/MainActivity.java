@@ -2,6 +2,7 @@ package com.example.flexbattle;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -33,7 +34,7 @@ public class MainActivity extends Activity {
         setGreetingTextByTime();
     }
 
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "SetTextI18n"})
     private void setGreetingTextByTime(){
         linearLayout = findViewById(R.id.mainLayout);
         greetingTextView = findViewById(R.id.greetingText);
@@ -43,13 +44,13 @@ public class MainActivity extends Activity {
             //morning
             linearLayout.setBackground(getDrawable(R.drawable.morning_bg));
             greetingTextView.setText("Good Morning");
-        } else if (timeOfDay >= 12 && timeOfDay < 16) {
+        } else if (timeOfDay < 16) {
             //afternoon
             greetingTextView.setText("Good Afternoon");
-        } else if (timeOfDay >= 16 && timeOfDay < 21) {
+        } else if (timeOfDay < 21) {
             //evening
             greetingTextView.setText("Good Evening");
-        } else if (timeOfDay >= 21 && timeOfDay < 24) {
+        } else {
             //night
             linearLayout.setBackground(getDrawable(R.drawable.night_bg));
             greetingTextView.setText("Good Night");
@@ -67,7 +68,7 @@ public class MainActivity extends Activity {
                     soloPlayButton.startAnimation(animation);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setContentView(R.layout.activity_solo_login);
+                    openSoloLoginActivity();
                 }
                 return true;
             }
@@ -81,11 +82,20 @@ public class MainActivity extends Activity {
                     pvpPlayButton.startAnimation(animation);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setContentView(R.layout.activity_pvp_login);
+                    openPvPLoginActivity();
                 }
                 return true;
             }
         });
     }
 
+    private void openSoloLoginActivity(){
+        Intent intent = new Intent(this, SoloLoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void openPvPLoginActivity(){
+        Intent intent = new Intent(this, PvPLoginActivity.class);
+        startActivity(intent);
+    }
 }
