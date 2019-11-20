@@ -36,10 +36,28 @@ public class SoloLoginActivity extends Activity {
                 return true;
             }
         });
+        verifyLogin.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.login_button_animation);
+                    verifyLogin.startAnimation(animation);
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    openGamesListActivity();
+                }
+                return true;
+            }
+        });
     }
 
     private void openRegistrationActivity(){
         Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    private void openGamesListActivity(){
+        Intent intent = new Intent(this, GamesListActivity.class);
         startActivity(intent);
     }
 }

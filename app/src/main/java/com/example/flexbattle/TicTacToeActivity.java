@@ -1,0 +1,13 @@
+package com.example.flexbattle;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class TicTacToeActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tic_tac_toe);
+    }
+}
