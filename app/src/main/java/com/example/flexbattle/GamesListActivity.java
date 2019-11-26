@@ -47,4 +47,9 @@ public class GamesListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TicTacToeActivity.class);
         startActivity(intent);
     }
+
+    private void openRockPaperScissorsLizardSpockGame(){
+        Intent intent = new Intent(this, TicTacToeActivity.class);
+        startActivity(intent);
+    }
 }

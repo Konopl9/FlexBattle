@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TicTacToeActivity"></activity>
+        <activity android:name=".RockPaperScissorsLizardSpockActivity"></activity>
+        <activity android:name=".TicTacToeActivity" />
         <activity android:name=".GamesListActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".PvPLoginActivity" />
