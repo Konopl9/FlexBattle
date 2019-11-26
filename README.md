@@ -13,3 +13,6 @@ To play solo or with friends. Collecting coins.
 4.2D Game Canvas – Canvas
 5.Persistent Storage – SharedPreferences
 6.Networking- Facebook
+]]></content>
+  <tabTrigger>readme</tabTrigger>
+</snippet>
