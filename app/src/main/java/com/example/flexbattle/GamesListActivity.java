@@ -38,6 +38,10 @@ public class GamesListActivity extends AppCompatActivity {
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position == 0) {
               openTicTacToeGame();
+            }
+            if (position == 1) {
+              openMexicoDiceGame();
+
             } else if (position == 2) {
               openRockPaperScissorsLizardSpockGame();
             }
@@ -47,6 +51,11 @@ public class GamesListActivity extends AppCompatActivity {
 
   private void openTicTacToeGame() {
     Intent intent = new Intent(this, TicTacToeActivity.class);
+    startActivity(intent);
+  }
+
+  private void openMexicoDiceGame() {
+    Intent intent = new Intent(this, MexicoDiceActivity.class);
     startActivity(intent);
   }
 
