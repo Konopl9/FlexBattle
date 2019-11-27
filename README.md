@@ -4,7 +4,7 @@
 Play Market(maybe) :)
 ## Usage
 To play solo or with friends. Collecting coins.
-## Contributing
+## Lists
 1.Advanced GUI - Lists
 2.Database – SQLite
 3.Signal Processing – Image, Sound
