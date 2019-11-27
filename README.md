@@ -4,11 +4,11 @@
 Play Market(maybe) :)
 ## Usage
 To play solo or with friends. Collecting coins.
-## Lists
-1.Advanced GUI - Lists
-2.Database – SQLite
-3.Signal Processing – Image, Sound
-4.2D Game Canvas – Canvas
-5.Persistent Storage – SharedPreferences
-6.Networking- Facebook
+## Project main points
+1. Advanced GUI - Lists
+2. Database – SQLite
+3. Signal Processing – Image, Sound
+4. 2D Game Canvas – Canvas
+5. Persistent Storage – SharedPreferences
+6. Networking- Facebook
 
