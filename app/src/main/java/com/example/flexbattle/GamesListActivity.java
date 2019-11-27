@@ -38,9 +38,14 @@ public class GamesListActivity extends AppCompatActivity {
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position == 0) {
               openTicTacToeGame();
+<<<<<<< HEAD
             }
             if (position == 1) {
               openMexicoDiceGame();
+=======
+            } else if (position == 2) {
+              openRockPaperScissorsLizardSpockGame();
+>>>>>>> FlexBattle-Rock-Paper-Scissors-Lizard-Spock
             }
           }
         });
@@ -51,8 +56,13 @@ public class GamesListActivity extends AppCompatActivity {
     startActivity(intent);
   }
 
+<<<<<<< HEAD
   private void openMexicoDiceGame() {
     Intent intent = new Intent(this, MexicoDiceActivity.class);
+=======
+  private void openRockPaperScissorsLizardSpockGame() {
+    Intent intent = new Intent(this, RockPaperScissorsLizardSpockActivity.class);
+>>>>>>> FlexBattle-Rock-Paper-Scissors-Lizard-Spock
     startActivity(intent);
   }
 }
