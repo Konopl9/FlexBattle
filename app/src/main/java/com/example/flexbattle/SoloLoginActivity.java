@@ -12,11 +12,15 @@ import android.widget.Button;
 
 public class SoloLoginActivity extends Activity {
 
+    DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solo_login);
         setOnTouchListenerToSoloLoginMenuButtons();
+
+        dbHelper = new DBHelper(this);
     }
 
     @SuppressLint("ClickableViewAccessibility")
