@@ -37,7 +37,7 @@
         tools:targetApi="jelly_bean" />
 
     <EditText
-        android:id="@+id/loginInput"
+        android:id="@+id/soloLoginInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -54,7 +54,7 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/soloPasswordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
