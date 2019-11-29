@@ -1,6 +1,10 @@
 package com.example.flexbattle;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,20 +21,23 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
   private static final int PAPER = 2;
   private static final int LIZARD = 3;
   private static final int SCISSORS = 4;
-
+  DBHelper dbHelper;
+  String user_login;
   private ImageView iv_cpu, iv_player;
   private Button rock, spock, paper, lizard, scissors;
-
   private TextView tv_info;
-
   private Random r;
-
   private int playedCPU, playedPLAYER;
+  private int winCounter = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_rock_paper_scissors_lizard_spock);
+
+    user_login = getIntent().getExtras().getString("RockPaperScissorsLizardSpockGame_USER_LOGIN");
+
+    dbHelper = new DBHelper(this);
 
     iv_cpu = findViewById(R.id.iv_cpu);
     iv_player = findViewById(R.id.iv_player);
@@ -49,50 +56,50 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              playedPLAYER = ROCK;
-              playedCPU = r.nextInt(5);
-              setImages(playedPLAYER, playedCPU);
-              tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            playedPLAYER = ROCK;
+            playedCPU = r.nextInt(5);
+            setImages(playedPLAYER, playedCPU);
+            tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
           }
         });
     spock.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              playedPLAYER = SPOCK;
-              playedCPU = r.nextInt(5);
-              setImages(playedPLAYER, playedCPU);
-              tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            playedPLAYER = SPOCK;
+            playedCPU = r.nextInt(5);
+            setImages(playedPLAYER, playedCPU);
+            tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
           }
         });
     paper.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              playedPLAYER = PAPER;
-              playedCPU = r.nextInt(5);
-              setImages(playedPLAYER, playedCPU);
-              tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            playedPLAYER = PAPER;
+            playedCPU = r.nextInt(5);
+            setImages(playedPLAYER, playedCPU);
+            tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
           }
         });
     scissors.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              playedPLAYER = SCISSORS;
-              playedCPU = r.nextInt(5);
-              setImages(playedPLAYER, playedCPU);
-              tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            playedPLAYER = SCISSORS;
+            playedCPU = r.nextInt(5);
+            setImages(playedPLAYER, playedCPU);
+            tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
           }
         });
     lizard.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              playedPLAYER = LIZARD;
-              playedCPU = r.nextInt(5);
-              setImages(playedPLAYER, playedCPU);
-              tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            playedPLAYER = LIZARD;
+            playedCPU = r.nextInt(5);
+            setImages(playedPLAYER, playedCPU);
+            tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
           }
         });
   }
@@ -105,10 +112,19 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
 
   // Converts result from the getWinner() function to text
   private String getWinnerText(int result) {
+    SQLiteDatabase database = dbHelper.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+    int currentMoneyValue = getCurrentMoneyValue(database, user_login);
     switch (result) {
       case 1:
+        winCounter++;
+        if (winCounter == 3) {
+          winCounter = 0;
+          putMoneyValue(database, user_login, contentValues, currentMoneyValue + 1);
+        }
         return "Winner Player";
       case -1:
+        winCounter--;
         return "Winner CPU";
       case 0:
         return "Draw";
@@ -117,43 +133,71 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
     }
   }
 
-  //set images of the picks
-    private void setImages(int A, int B){
-      switch (A){
-          case ROCK:
-              iv_player.setImageResource(R.drawable.rock);
-              break;
-          case SPOCK:
-              iv_player.setImageResource(R.drawable.spock);
-              break;
-          case PAPER:
-              iv_player.setImageResource(R.drawable.paper);
-              break;
-          case LIZARD:
-              iv_player.setImageResource(R.drawable.lizard);
-              break;
-          case SCISSORS:
-              iv_player.setImageResource(R.drawable.scissors);
-              break;
-
-      }
-        switch (B){
-            case ROCK:
-                iv_cpu.setImageResource(R.drawable.rock);
-                break;
-            case SPOCK:
-                iv_cpu.setImageResource(R.drawable.spock);
-                break;
-            case PAPER:
-                iv_cpu.setImageResource(R.drawable.paper);
-                break;
-            case LIZARD:
-                iv_cpu.setImageResource(R.drawable.lizard);
-                break;
-            case SCISSORS:
-                iv_cpu.setImageResource(R.drawable.scissors);
-                break;
-
-        }
+  // set images of the picks
+  private void setImages(int A, int B) {
+    switch (A) {
+      case ROCK:
+        iv_player.setImageResource(R.drawable.rock);
+        break;
+      case SPOCK:
+        iv_player.setImageResource(R.drawable.spock);
+        break;
+      case PAPER:
+        iv_player.setImageResource(R.drawable.paper);
+        break;
+      case LIZARD:
+        iv_player.setImageResource(R.drawable.lizard);
+        break;
+      case SCISSORS:
+        iv_player.setImageResource(R.drawable.scissors);
+        break;
     }
+    switch (B) {
+      case ROCK:
+        iv_cpu.setImageResource(R.drawable.rock);
+        break;
+      case SPOCK:
+        iv_cpu.setImageResource(R.drawable.spock);
+        break;
+      case PAPER:
+        iv_cpu.setImageResource(R.drawable.paper);
+        break;
+      case LIZARD:
+        iv_cpu.setImageResource(R.drawable.lizard);
+        break;
+      case SCISSORS:
+        iv_cpu.setImageResource(R.drawable.scissors);
+        break;
+    }
+  }
+
+  private int getCurrentMoneyValue(SQLiteDatabase database, String login) {
+    int money_value = 0;
+    Cursor cursor =
+        database.rawQuery(
+            "SELECT * FROM "
+                + DBHelper.TABLE_USER
+                + " WHERE "
+                + DBHelper.USER_KEY_LOGIN
+                + "='"
+                + login
+                + "'",
+            null);
+    if (cursor.moveToFirst()) {
+      int points = cursor.getColumnIndex(DBHelper.USER_KEY_POINTS);
+      do {
+        money_value = cursor.getInt(points);
+      } while (cursor.moveToNext());
+    } else Log.d("mLog", "0 rows");
+    cursor.close();
+    return money_value;
+  }
+
+  private void putMoneyValue(
+      SQLiteDatabase database, String login, ContentValues contentValues, int currentMoneyValue) {
+    String strFilter = DBHelper.USER_KEY_LOGIN + " = " + "'" + login + "'";
+    contentValues.put(DBHelper.USER_KEY_POINTS, currentMoneyValue);
+    database.update(DBHelper.TABLE_USER, contentValues, strFilter, null);
+    contentValues.clear();
+  }
 }

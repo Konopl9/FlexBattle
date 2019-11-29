@@ -108,7 +108,10 @@ public class DBHelper extends SQLiteOpenHelper {
     db.execSQL(CREATE_TABLE_USER_HAS_GAME);
     db.execSQL(CREATE_TABLE_GAME);
     insertGameIntoTable(db);
+    insertSuperUser(db);
   }
+
+
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -122,25 +125,51 @@ public class DBHelper extends SQLiteOpenHelper {
     ContentValues contentValues = new ContentValues();
 
     contentValues.put(DBHelper.GAME_KEY_ID, 0);
-    contentValues.put(DBHelper.GAME_KEY_TITLE, "Tic Tac Toe");
+    contentValues.put(DBHelper.GAME_KEY_TITLE, "Rock Paper Scissors Lizard Spock");
     contentValues.put(DBHelper.GAME_KEY_DESCRIPTION, "Play");
     contentValues.put(DBHelper.GAME_KEY_WAYTOWIN, "Win");
     contentValues.put(DBHelper.GAME_KEY_PRICE, 0);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.GAME_KEY_ID, 1);
-    contentValues.put(DBHelper.GAME_KEY_TITLE, "Mexico dice");
+    contentValues.put(DBHelper.GAME_KEY_TITLE, "Tic Tac Toe");
     contentValues.put(DBHelper.GAME_KEY_DESCRIPTION, "Play");
     contentValues.put(DBHelper.GAME_KEY_WAYTOWIN, "Win");
     contentValues.put(DBHelper.GAME_KEY_PRICE, 10);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.GAME_KEY_ID, 2);
-    contentValues.put(DBHelper.GAME_KEY_TITLE, "Rock Paper Scissors Lizard Spock");
+    contentValues.put(DBHelper.GAME_KEY_TITLE, "Mexico dice");
     contentValues.put(DBHelper.GAME_KEY_DESCRIPTION, "Play");
     contentValues.put(DBHelper.GAME_KEY_WAYTOWIN, "Win");
     contentValues.put(DBHelper.GAME_KEY_PRICE, 20);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
+    contentValues.clear();
+  }
+
+  private void insertSuperUser(SQLiteDatabase database) {
+
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(DBHelper.USER_KEY_LOGIN, "test");
+    contentValues.put(DBHelper.USER_KEY_PASSWORD, "test");
+    contentValues.put(DBHelper.USER_KEY_EMAIL, "test@gmail.com");
+    contentValues.put(DBHelper.USER_KEY_POINTS, 100);
+    database.insert(DBHelper.TABLE_USER, null, contentValues);
+    contentValues.clear();
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 1);
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
+    database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
+    contentValues.clear();
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 2);
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
+    database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
+    contentValues.clear();
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 3);
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
+    database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
     contentValues.clear();
   }
 }
