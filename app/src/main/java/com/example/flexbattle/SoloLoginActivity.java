@@ -20,6 +20,8 @@ public class SoloLoginActivity extends Activity {
 
   EditText et_login, et_password;
 
+  String user_login;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class SoloLoginActivity extends Activity {
   }
 
   private boolean accountValidation(SQLiteDatabase database) {
-    String login = et_login.getText().toString().trim();
+    user_login = et_login.getText().toString().trim();
     String password = et_password.getText().toString().trim();
     int cursorCount;
     Cursor mCursor =
@@ -88,7 +90,7 @@ public class SoloLoginActivity extends Activity {
                 + " WHERE "
                 + DBHelper.USER_KEY_LOGIN
                 + "='"
-                + login
+                + user_login
                 + "'"
                 + " AND "
                 + DBHelper.USER_KEY_PASSWORD
@@ -108,6 +110,8 @@ public class SoloLoginActivity extends Activity {
 
   private void openGamesListActivity() {
     Intent intent = new Intent(this, GamesListActivity.class);
+    intent.putExtra("COUNT_OF_PLAYERS", 1);
+    intent.putExtra("PLAYER_LOGIN", user_login);
     startActivity(intent);
   }
 }

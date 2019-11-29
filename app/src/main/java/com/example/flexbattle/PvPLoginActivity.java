@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,10 @@ public class PvPLoginActivity extends Activity {
       et_firstPlayerPassword,
       et_secondPlayerLogin,
       et_secondPlayerPassword;
+
   boolean firstPlayerIsReady = false, secondPlayerIsReady = false;
+
+  String second_user_login;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +156,11 @@ public class PvPLoginActivity extends Activity {
   }
 
   private boolean accountValidation(
-      SQLiteDatabase database, EditText playerLogin, EditText playerPassword) {
+          SQLiteDatabase database, EditText playerLogin, EditText playerPassword) {
     String login = playerLogin.getText().toString().trim();
     String password = playerPassword.getText().toString().trim();
     int cursorCount;
+
     Cursor mCursor =
         database.rawQuery(
             "SELECT * FROM "
@@ -171,6 +176,14 @@ public class PvPLoginActivity extends Activity {
                 + password
                 + "'",
             null);
+
+    if (mCursor.moveToFirst()) {
+      int userLoginIndex = mCursor.getColumnIndex(DBHelper.USER_KEY_LOGIN);
+      do {
+        second_user_login = mCursor.getString(userLoginIndex);
+      } while (mCursor.moveToNext());
+    } else Log.d("mLog", "0 rows");
+
     cursorCount = mCursor.getCount();
     mCursor.close();
     return cursorCount == 1;
@@ -178,6 +191,8 @@ public class PvPLoginActivity extends Activity {
 
   private void openGamesListActivity() {
     Intent intent = new Intent(this, GamesListActivity.class);
+    intent.putExtra("COUNT_OF_PLAYERS", 2);
+    intent.putExtra("SECOND_USER_LOGIN", second_user_login);
     startActivity(intent);
   }
 }
