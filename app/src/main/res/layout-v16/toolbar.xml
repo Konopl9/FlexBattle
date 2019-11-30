@@ -19,28 +19,28 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:fontFamily="@font/gothambold"
-            android:textSize="16dp" />
+            android:text="fsdfsdf"
+            android:gravity="start|center"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"/>
 
         <TextView
             android:id="@+id/FlexMoney"
-            android:layout_width="154dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="38dp"
-            android:layout_marginRight="38dp"
             android:fontFamily="@font/gothammedium"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp"
-            android:paddingEnd="30dp"
-            android:paddingRight="16dp"
-            android:textSize="18sp" />
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/coin_img"
+            android:layout_toStartOf="@id/coin_img" />
 
         <ImageView
             android:id="@+id/coin_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/coin"
             android:layout_alignParentEnd="true" />
 

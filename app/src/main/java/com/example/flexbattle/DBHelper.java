@@ -2,6 +2,7 @@ package com.example.flexbattle;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -102,6 +103,141 @@ public class DBHelper extends SQLiteOpenHelper {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
+  //Check if user have enough money and subtract  money
+  public static int buyGame(String id, String user_login, SQLiteDatabase database) {
+    Cursor c = null;
+    int game_id;
+    int user_has_money;
+    int game_has_price;
+    int current_balnce;
+    String user_money =
+        "SELECT "
+            + USER_KEY_POINTS
+            + " FROM "
+            + TABLE_USER
+            + " WHERE "
+            + USER_KEY_LOGIN
+            + " = '"
+            + user_login
+            + "'";
+
+    String game_price =
+        "SELECT "
+            + GAME_KEY_PRICE
+            + " FROM "
+            + TABLE_GAME
+            + " WHERE "
+            + GAME_KEY_TITLE
+            + " = '"
+            + id
+            + "'";
+    c = database.rawQuery(user_money, null);
+    c.moveToFirst();
+    user_has_money = c.getInt(c.getColumnIndex(USER_KEY_POINTS));
+    c.close();
+    c = database.rawQuery(game_price, null);
+    c.moveToFirst();
+    game_has_price = c.getInt(c.getColumnIndex(GAME_KEY_PRICE));
+    c.close();
+
+    String query =
+            "SELECT "
+                    + GAME_KEY_ID
+                    + " From "
+                    + TABLE_GAME
+                    + " WHERE "
+                    + GAME_KEY_TITLE
+                    + "='"
+                    + id
+                    + "'";
+    c = database.rawQuery(query, null);
+    c.moveToFirst();
+    game_id = c.getInt(c.getColumnIndex(GAME_KEY_ID));
+    c.close();
+    current_balnce = user_has_money - game_has_price;
+
+    if (user_has_money >= game_has_price) {
+      String query1 =
+          " UPDATE "
+              + TABLE_USER_HAS_GAME
+              + " SET "
+              + USER_HAS_GAME_KEY_STATE
+              + " = "
+              + 1
+              + " WHERE "
+              + USER_HAS_GAME_KEY_USER_ID
+              + " = '"
+              + user_login
+              + "'"
+              + " AND "
+              + USER_HAS_GAME_KEY_GAME_ID
+              + " = '"
+              + game_id
+              + "'";
+      database.execSQL(query1);
+      query1 = " UPDATE "
+              + TABLE_USER
+              + " SET "
+              + USER_KEY_POINTS
+              + " = "
+              + current_balnce
+              + " WHERE "
+              + USER_KEY_LOGIN
+              + " = '"
+              + user_login
+              + "'";
+      database.execSQL(query1);
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
+  // check if user dont have this game already
+  public static int checkIfGameIsAlreadyBought(
+      String game_title, String user_login, SQLiteDatabase database) {
+    Cursor c = null;
+    Cursor c1 = null;
+    int game_state;
+    int game_id;
+
+    String query =
+        "SELECT "
+            + GAME_KEY_ID
+            + " From "
+            + TABLE_GAME
+            + " WHERE "
+            + GAME_KEY_TITLE
+            + "='"
+            + game_title
+            + "'";
+    c = database.rawQuery(query, null);
+    c.moveToFirst();
+    game_id = c.getInt(c.getColumnIndex(GAME_KEY_ID));
+    c.close();
+
+    String query1 =
+        " SELECT "
+            + USER_HAS_GAME_KEY_STATE
+            + " FROM "
+            + TABLE_USER_HAS_GAME
+            + " WHERE "
+            + USER_HAS_GAME_KEY_USER_ID
+            + " = '"
+            + user_login
+            + "'"
+            + " AND "
+            + USER_HAS_GAME_KEY_GAME_ID
+            + " = '"
+            + game_id
+            + "'";
+    c1 = database.rawQuery(query1, null);
+    c1.moveToFirst();
+    game_state = c1.getInt(c1.getColumnIndex(USER_HAS_GAME_KEY_STATE));
+    c1.close();
+    return game_state;
+  }
+
   @Override
   public void onCreate(SQLiteDatabase db) {
     db.execSQL(CREATE_TABLE_USER);
@@ -111,8 +247,6 @@ public class DBHelper extends SQLiteOpenHelper {
     insertSuperUser(db);
   }
 
-
-
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     db.execSQL("drop table if exists " + TABLE_USER);
@@ -120,6 +254,7 @@ public class DBHelper extends SQLiteOpenHelper {
     db.execSQL("drop table if exists " + TABLE_GAME);
   }
 
+  //insert games
   public void insertGameIntoTable(SQLiteDatabase database) {
 
     ContentValues contentValues = new ContentValues();
@@ -132,21 +267,23 @@ public class DBHelper extends SQLiteOpenHelper {
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.GAME_KEY_ID, 1);
-    contentValues.put(DBHelper.GAME_KEY_TITLE, "Tic Tac Toe");
+    contentValues.put(DBHelper.GAME_KEY_TITLE, "Mexico Dice");
     contentValues.put(DBHelper.GAME_KEY_DESCRIPTION, "Play");
     contentValues.put(DBHelper.GAME_KEY_WAYTOWIN, "Win");
     contentValues.put(DBHelper.GAME_KEY_PRICE, 10);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.GAME_KEY_ID, 2);
-    contentValues.put(DBHelper.GAME_KEY_TITLE, "Mexico dice");
+    contentValues.put(DBHelper.GAME_KEY_TITLE, "Tic Tac Toe");
     contentValues.put(DBHelper.GAME_KEY_DESCRIPTION, "Play");
     contentValues.put(DBHelper.GAME_KEY_WAYTOWIN, "Win");
     contentValues.put(DBHelper.GAME_KEY_PRICE, 20);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
+
   }
 
+  // insert test user
   private void insertSuperUser(SQLiteDatabase database) {
 
     ContentValues contentValues = new ContentValues();
@@ -157,18 +294,18 @@ public class DBHelper extends SQLiteOpenHelper {
     database.insert(DBHelper.TABLE_USER, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 0);
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
+    database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
+    contentValues.clear();
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
     contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 1);
     contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
     database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
     contentValues.clear();
     contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
     contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 2);
-    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
-    database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
-    contentValues.clear();
-    contentValues.put(DBHelper.USER_HAS_GAME_KEY_USER_ID, "test");
-    contentValues.put(DBHelper.USER_HAS_GAME_KEY_GAME_ID, 3);
-    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 1);
+    contentValues.put(DBHelper.USER_HAS_GAME_KEY_STATE, 0);
     database.insert(DBHelper.TABLE_USER_HAS_GAME, null, contentValues);
     contentValues.clear();
   }
