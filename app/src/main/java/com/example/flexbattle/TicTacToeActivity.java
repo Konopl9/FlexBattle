@@ -2,7 +2,11 @@ package com.example.flexbattle;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,10 +30,25 @@ public class TicTacToeActivity extends Activity implements View.OnClickListener 
 
   private TextView textViewPlayer2;
 
+  // DB options
+  DBHelper dbHelper;
+  String user_login, first_user_login, second_user_login;
+  int count_of_player;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_tic_tac_toe);
+
+    // Db options
+    count_of_player = getIntent().getExtras().getInt("COUNT_OF_PLAYERS");
+    if (count_of_player == 1) {
+      user_login = getIntent().getExtras().getString("TicTacToe_USER_LOGIN");
+    } else {
+      first_user_login = getIntent().getExtras().getString("TicTacToe_FIRST_USER_LOGIN");
+      second_user_login = getIntent().getExtras().getString("TicTacToe_SECOND_USER_LOGIN");
+    }
+    dbHelper = new DBHelper(this);
 
     textViewPlayer1 = findViewById(R.id.text_view_p1);
     textViewPlayer2 = findViewById(R.id.text_view_p2);
@@ -118,8 +137,20 @@ public class TicTacToeActivity extends Activity implements View.OnClickListener 
   }
 
   private void player1Wins() {
+    SQLiteDatabase database = dbHelper.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
     player1Points++;
     Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
+    if (count_of_player == 1) {
+      int currentMoneyValue = getCurrentMoneyValue(database, user_login);
+      putMoneyValue(database, user_login, contentValues, currentMoneyValue + 1);
+      contentValues.clear();
+
+    } else {
+      int currentMoneyValue = getCurrentMoneyValue(database, first_user_login);
+      putMoneyValue(database, first_user_login, contentValues, currentMoneyValue + 1);
+      contentValues.clear();
+    }
     updatePointsText();
     resetBoard();
   }
@@ -128,6 +159,13 @@ public class TicTacToeActivity extends Activity implements View.OnClickListener 
     player2Points++;
     Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
     updatePointsText();
+    SQLiteDatabase database = dbHelper.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+    if (count_of_player == 2) {
+      int currentMoneyValue = getCurrentMoneyValue(database, second_user_login);
+      putMoneyValue(database, second_user_login, contentValues, currentMoneyValue + 1);
+      contentValues.clear();
+    }
     resetBoard();
   }
 
@@ -178,4 +216,34 @@ public class TicTacToeActivity extends Activity implements View.OnClickListener 
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
+
+  private int getCurrentMoneyValue(SQLiteDatabase database, String login) {
+    int money_value = 0;
+    Cursor cursor =
+            database.rawQuery(
+                    "SELECT * FROM "
+                            + DBHelper.TABLE_USER
+                            + " WHERE "
+                            + DBHelper.USER_KEY_LOGIN
+                            + "='"
+                            + login
+                            + "'",
+                    null);
+    if (cursor.moveToFirst()) {
+      int points = cursor.getColumnIndex(DBHelper.USER_KEY_POINTS);
+      do {
+        money_value = cursor.getInt(points);
+      } while (cursor.moveToNext());
+    } else Log.d("mLog", "0 rows");
+    cursor.close();
+    return money_value;
+  }
+
+  private void putMoneyValue(
+          SQLiteDatabase database, String login, ContentValues contentValues, int currentMoneyValue) {
+    String strFilter = DBHelper.USER_KEY_LOGIN + " = " + "'" + login + "'";
+    contentValues.put(DBHelper.USER_KEY_POINTS, currentMoneyValue);
+    database.update(DBHelper.TABLE_USER, contentValues, strFilter, null);
+    contentValues.clear();
+  }
 }

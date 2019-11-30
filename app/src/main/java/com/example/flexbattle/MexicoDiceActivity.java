@@ -1,8 +1,12 @@
 package com.example.flexbattle;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,11 +30,27 @@ public class MexicoDiceActivity extends AppCompatActivity {
 
   Random r;
 
+  // DB options
+  DBHelper dbHelper;
+  String user_login, first_user_login, second_user_login;
+  int count_of_player;
+
   @SuppressLint("SetTextI18n")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_mexico_dice);
+
+    // Db options
+    count_of_player = getIntent().getExtras().getInt("COUNT_OF_PLAYERS");
+    if (count_of_player == 1) {
+      user_login = getIntent().getExtras().getString("MexicoDice_USER_LOGIN");
+    } else {
+      first_user_login = getIntent().getExtras().getString("MexicoDice_FIRST_USER_LOGIN");
+      second_user_login = getIntent().getExtras().getString("MexicoDice_SECOND_USER_LOGIN");
+    }
+
+    dbHelper = new DBHelper(this);
 
     r = new Random();
 
@@ -173,6 +193,9 @@ public class MexicoDiceActivity extends AppCompatActivity {
 
   // show end game dialog
   private void checkEndGame() {
+    SQLiteDatabase database = dbHelper.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+
     if (livesP1 == 0 || livesP2 == 0) {
       iv_dice_p1.setEnabled(false);
       iv_dice_p1.setEnabled(false);
@@ -180,9 +203,24 @@ public class MexicoDiceActivity extends AppCompatActivity {
       String text = "";
       if (livesP1 != 0) {
         text = "Game Over! Winner Player 1";
+        if (count_of_player == 1) {
+          int currentMoneyValue = getCurrentMoneyValue(database, user_login);
+          putMoneyValue(database, user_login, contentValues, currentMoneyValue + 1);
+          contentValues.clear();
+
+        } else {
+          int currentMoneyValue = getCurrentMoneyValue(database, first_user_login);
+          putMoneyValue(database, first_user_login, contentValues, currentMoneyValue + 1);
+          contentValues.clear();
+        }
       }
       if (livesP2 != 0) {
         text = "Game Over! Winner Player 2";
+        if (count_of_player == 2) {
+          int currentMoneyValue = getCurrentMoneyValue(database, second_user_login);
+          putMoneyValue(database, second_user_login, contentValues, currentMoneyValue + 1);
+          contentValues.clear();
+        }
       }
       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
       alertDialogBuilder.setCancelable(false);
@@ -198,5 +236,35 @@ public class MexicoDiceActivity extends AppCompatActivity {
       AlertDialog alertDialog = alertDialogBuilder.create();
       alertDialog.show();
     }
+  }
+
+  private int getCurrentMoneyValue(SQLiteDatabase database, String login) {
+    int money_value = 0;
+    Cursor cursor =
+        database.rawQuery(
+            "SELECT * FROM "
+                + DBHelper.TABLE_USER
+                + " WHERE "
+                + DBHelper.USER_KEY_LOGIN
+                + "='"
+                + login
+                + "'",
+            null);
+    if (cursor.moveToFirst()) {
+      int points = cursor.getColumnIndex(DBHelper.USER_KEY_POINTS);
+      do {
+        money_value = cursor.getInt(points);
+      } while (cursor.moveToNext());
+    } else Log.d("mLog", "0 rows");
+    cursor.close();
+    return money_value;
+  }
+
+  private void putMoneyValue(
+      SQLiteDatabase database, String login, ContentValues contentValues, int currentMoneyValue) {
+    String strFilter = DBHelper.USER_KEY_LOGIN + " = " + "'" + login + "'";
+    contentValues.put(DBHelper.USER_KEY_POINTS, currentMoneyValue);
+    database.update(DBHelper.TABLE_USER, contentValues, strFilter, null);
+    contentValues.clear();
   }
 }

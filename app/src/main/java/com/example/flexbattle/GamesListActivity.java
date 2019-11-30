@@ -27,18 +27,43 @@ public class GamesListActivity extends AppCompatActivity {
 
   TextView tw_money, tw_login;
 
+  // Game Titles
   String[] nameArray = {"Rock Paper Scissors Lizard Spock", "Mexico Dice", "Tic Tac Toe"};
 
-  String[] infoArray = {
-    "Win 3 times in a row to gain 1 coin", "Win once to gain coin", "Win once to gain coin"
+  // Description for solo game
+  String[] infoSoloPlayArray = {
+    "Win 3 times in a row to gain 1 coin",
+    "Win once to gain coin \nTo gain coins play as Player 1",
+    "Win once to gain coin \nTo gain coins use CROSS mark"
   };
 
+  // Description for multilayer
+  String[] infoPvPPlayArray = {
+    "Win 3 times in a row to gain 1 coin \nFirst logged player will gain coins",
+    "Win once to gain coin \nFirst logged player will be Player 1",
+    "Win once to gain coin \nFirst logged player will be CROSS mark"
+  };
+
+  // Array to clone
+  String[] infoSelectedPlayArray;
+
+  // Image for game icons
   Integer[] imageArray = {
     R.drawable.rpsls_icon, R.drawable.mexico_dice_icon, R.drawable.tic_tac_toe_icon
   };
 
+  // String with solo intent user login
   String user_login;
 
+  // String with first intent user login
+  String first_user_login;
+
+  // String with second intent user login
+  String second_user_login;
+
+  Integer count_of_players;
+
+  @SuppressLint("SetTextI18n")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,31 +74,42 @@ public class GamesListActivity extends AppCompatActivity {
     tw_money = findViewById(R.id.FlexMoney);
     tw_login = findViewById(R.id.toolbarLogin);
 
+    // Db options
     dbHelper = new DBHelper(this);
     SQLiteDatabase database = dbHelper.getReadableDatabase();
 
-    int count_of_players = getIntent().getExtras().getInt("COUNT_OF_PLAYERS");
+    // Get data from intends
+    count_of_players = getIntent().getExtras().getInt("COUNT_OF_PLAYERS");
     user_login = getIntent().getExtras().getString("PLAYER_LOGIN");
-    String second_user_login = getIntent().getExtras().getString("SECOND_USER_LOGIN");
+    first_user_login = getIntent().getExtras().getString("FIRST_USER_LOGIN");
+    second_user_login = getIntent().getExtras().getString("SECOND_USER_LOGIN");
+    // Buffer string to store logged user login and put into listView
     String main_in_game_login;
-
-    // Tool bar insert data
-    tw_login.setText(user_login);
-    int user_money = getUserMoney(database, user_login);
-    tw_money.setText(String.valueOf(user_money));
 
     // separate for solo and multilayer
     if (count_of_players == 1) {
       main_in_game_login = user_login;
+      infoSelectedPlayArray = infoSoloPlayArray.clone();
+      // Tool bar insert data
+      tw_login.setText(user_login);
+      int user_money = getUserMoney(database, user_login);
+      tw_money.setText(String.valueOf(user_money));
     } else {
       main_in_game_login = second_user_login;
+      infoSelectedPlayArray = infoPvPPlayArray.clone();
+      // Tool bar insert data
+      tw_login.setText(first_user_login + " VS " + second_user_login);
+      int first_user_money = getUserMoney(database, first_user_login);
+      int second_user_money = getUserMoney(database, second_user_login);
+      tw_money.setText(first_user_money + " VS " + second_user_money);
     }
 
+    // Crating list view
     GamesListAdapter gamesListAdapter =
         new GamesListAdapter(
             this,
             nameArray,
-            infoArray,
+            infoSelectedPlayArray,
             imageArray,
             loadGamesStateFromDatabase(database, main_in_game_login));
     // push parameters to list view (4 parameter is array list with bought games )
@@ -84,7 +120,6 @@ public class GamesListActivity extends AppCompatActivity {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position == 0) {
-
               openRockPaperScissorsLizardSpockGame();
             }
             if (position == 1) {
@@ -105,12 +140,18 @@ public class GamesListActivity extends AppCompatActivity {
   }
 
   @Override
-  public void onResume() { // After a pause OR at startup
+  public void onResume() {
     super.onResume();
-    // Refresh your stuff here
+    // Refresh data after back button
     SQLiteDatabase database = dbHelper.getReadableDatabase();
-    int user_money = getUserMoney(database, user_login);
-    tw_money.setText(String.valueOf(user_money));
+    if (count_of_players == 1) {
+      int user_money = getUserMoney(database, user_login);
+      tw_money.setText(String.valueOf(user_money));
+    } else {
+      int first_user_money = getUserMoney(database, first_user_login);
+      int second_user_money = getUserMoney(database, second_user_login);
+      tw_money.setText(first_user_money + " VS " + second_user_money);
+    }
   }
 
   // Return list with game state for current login
@@ -138,7 +179,8 @@ public class GamesListActivity extends AppCompatActivity {
     return gamesState;
   }
 
-  private int getUserMoney(SQLiteDatabase database, String user_login) {
+  // Select value of player points
+  private int getUserMoney(SQLiteDatabase database, String login) {
     int money_value = 0;
     Cursor cursor =
         database.rawQuery(
@@ -147,7 +189,7 @@ public class GamesListActivity extends AppCompatActivity {
                 + " WHERE "
                 + DBHelper.USER_KEY_LOGIN
                 + "='"
-                + user_login
+                + login
                 + "'",
             null);
     if (cursor.moveToFirst()) {
@@ -162,20 +204,49 @@ public class GamesListActivity extends AppCompatActivity {
 
   // open tic tac toe game
   private void openTicTacToeGame() {
-    Intent intent = new Intent(this, TicTacToeActivity.class);
-    startActivity(intent);
+    if (count_of_players == 1) {
+      Intent intent = new Intent(this, TicTacToeActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("TicTacToe_USER_LOGIN", user_login);
+      startActivity(intent);
+    } else {
+      Intent intent = new Intent(this, TicTacToeActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("TicTacToe_FIRST_USER_LOGIN", first_user_login);
+      intent.putExtra("TicTacToe_SECOND_USER_LOGIN", second_user_login);
+      startActivity(intent);
+    }
   }
 
   // open mexico dice
   private void openMexicoDiceGame() {
-    Intent intent = new Intent(this, MexicoDiceActivity.class);
-    startActivity(intent);
+    if (count_of_players == 1) {
+      Intent intent = new Intent(this, MexicoDiceActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("MexicoDice_USER_LOGIN", user_login);
+      startActivity(intent);
+    } else {
+      Intent intent = new Intent(this, MexicoDiceActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("MexicoDice_FIRST_USER_LOGIN", first_user_login);
+      intent.putExtra("MexicoDice_SECOND_USER_LOGIN", second_user_login);
+      startActivity(intent);
+    }
   }
 
   // open rock paper scissors lizard spock game
   private void openRockPaperScissorsLizardSpockGame() {
-    Intent intent = new Intent(this, RockPaperScissorsLizardSpockActivity.class);
-    intent.putExtra("RockPaperScissorsLizardSpockGame_USER_LOGIN", user_login);
-    startActivity(intent);
+    if (count_of_players == 1) {
+      Intent intent = new Intent(this, RockPaperScissorsLizardSpockActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("RockPaperScissorsLizardSpockGame_USER_LOGIN", user_login);
+      startActivity(intent);
+    } else {
+      Intent intent = new Intent(this, RockPaperScissorsLizardSpockActivity.class);
+      intent.putExtra("COUNT_OF_PLAYERS", count_of_players);
+      intent.putExtra("RockPaperScissorsLizardSpockGame_FIRST_USER_LOGIN", first_user_login);
+      intent.putExtra("RockPaperScissorsLizardSpockGame_SECOND_USER_LOGIN", second_user_login);
+      startActivity(intent);
+    }
   }
 }

@@ -22,20 +22,29 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
   private static final int LIZARD = 3;
   private static final int SCISSORS = 4;
   DBHelper dbHelper;
-  String user_login;
+  String user_login, first_user_login, second_user_login;
+  int count_of_player;
   private ImageView iv_cpu, iv_player;
   private Button rock, spock, paper, lizard, scissors;
   private TextView tv_info;
   private Random r;
   private int playedCPU, playedPLAYER;
-  private int winCounter = 0;
+  private int winCounter = 0, winCounter_first_player = 0, winCounter_second_player = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_rock_paper_scissors_lizard_spock);
 
-    user_login = getIntent().getExtras().getString("RockPaperScissorsLizardSpockGame_USER_LOGIN");
+    count_of_player = getIntent().getExtras().getInt("COUNT_OF_PLAYERS");
+    if (count_of_player == 1) {
+      user_login = getIntent().getExtras().getString("RockPaperScissorsLizardSpockGame_USER_LOGIN");
+    } else {
+      first_user_login =
+          getIntent().getExtras().getString("RockPaperScissorsLizardSpockGame_FIRST_USER_LOGIN");
+      second_user_login =
+          getIntent().getExtras().getString("RockPaperScissorsLizardSpockGame_SECOND_USER_LOGIN");
+    }
 
     dbHelper = new DBHelper(this);
 
@@ -114,17 +123,32 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
   private String getWinnerText(int result) {
     SQLiteDatabase database = dbHelper.getWritableDatabase();
     ContentValues contentValues = new ContentValues();
-    int currentMoneyValue = getCurrentMoneyValue(database, user_login);
     switch (result) {
       case 1:
-        winCounter++;
-        if (winCounter == 3) {
-          winCounter = 0;
-          putMoneyValue(database, user_login, contentValues, currentMoneyValue + 1);
+        if (count_of_player == 1) {
+          winCounter++;
+          if (winCounter == 3) {
+            int currentMoneyValue = getCurrentMoneyValue(database, user_login);
+            putMoneyValue(database, user_login, contentValues, currentMoneyValue + 1);
+            contentValues.clear();
+            winCounter = 0;
+          }
+        } else {
+          winCounter_first_player++;
+          if (winCounter_first_player == 3) {
+            int currentMoneyValue = getCurrentMoneyValue(database, first_user_login);
+            putMoneyValue(database, first_user_login, contentValues, currentMoneyValue + 1);
+            contentValues.clear();
+            winCounter_first_player = 0;
+          }
         }
         return "Winner Player";
       case -1:
-        winCounter--;
+        if (count_of_player == 1) {
+          winCounter--;
+        } else {
+          winCounter_first_player--;
+        }
         return "Winner CPU";
       case 0:
         return "Draw";

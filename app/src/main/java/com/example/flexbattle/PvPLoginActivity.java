@@ -192,7 +192,8 @@ public class PvPLoginActivity extends Activity {
   private void openGamesListActivity() {
     Intent intent = new Intent(this, GamesListActivity.class);
     intent.putExtra("COUNT_OF_PLAYERS", 2);
-    intent.putExtra("SECOND_USER_LOGIN", second_user_login);
+    intent.putExtra("FIRST_USER_LOGIN", et_firstPlayerLogin.getText().toString().trim());
+    intent.putExtra("SECOND_USER_LOGIN", et_secondPlayerLogin.getText().toString().trim());
     startActivity(intent);
   }
 }

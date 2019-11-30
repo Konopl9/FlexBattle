@@ -19,7 +19,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:fontFamily="@font/gothambold"
-            android:text="(PLAYER LOGIN)"
             android:textSize="16dp" />
 
         <TextView
@@ -35,7 +34,6 @@
             android:paddingLeft="10dp"
             android:paddingEnd="30dp"
             android:paddingRight="16dp"
-            android:text="Flex money:"
             android:textSize="18sp" />
 
         <ImageView
