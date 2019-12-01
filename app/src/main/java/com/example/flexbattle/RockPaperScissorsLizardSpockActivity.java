@@ -30,6 +30,9 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
   private Random r;
   private int playedCPU, playedPLAYER;
   private int winCounter = 0, winCounter_first_player = 0, winCounter_second_player = 0;
+  // Sound
+  SoundPlayer soundPlayer;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
     }
 
     dbHelper = new DBHelper(this);
+
+    // Sound
+    soundPlayer = new SoundPlayer(this);
 
     iv_cpu = findViewById(R.id.iv_cpu);
     iv_player = findViewById(R.id.iv_player);
@@ -69,6 +75,7 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
             playedCPU = r.nextInt(5);
             setImages(playedPLAYER, playedCPU);
             tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            soundPlayer.playRockSound(getApplicationContext());
           }
         });
     spock.setOnClickListener(
@@ -79,6 +86,7 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
             playedCPU = r.nextInt(5);
             setImages(playedPLAYER, playedCPU);
             tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            soundPlayer.playSpockSound(getApplicationContext());
           }
         });
     paper.setOnClickListener(
@@ -89,6 +97,7 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
             playedCPU = r.nextInt(5);
             setImages(playedPLAYER, playedCPU);
             tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            soundPlayer.playPaperSound(getApplicationContext());
           }
         });
     scissors.setOnClickListener(
@@ -99,6 +108,7 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
             playedCPU = r.nextInt(5);
             setImages(playedPLAYER, playedCPU);
             tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            soundPlayer.playScissorsSound(getApplicationContext());
           }
         });
     lizard.setOnClickListener(
@@ -109,6 +119,7 @@ public class RockPaperScissorsLizardSpockActivity extends AppCompatActivity {
             playedCPU = r.nextInt(5);
             setImages(playedPLAYER, playedCPU);
             tv_info.setText(getWinnerText(getWinner(playedPLAYER, playedCPU)));
+            soundPlayer.playLizardSound(getApplicationContext());
           }
         });
   }

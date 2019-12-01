@@ -35,6 +35,9 @@ public class MexicoDiceActivity extends AppCompatActivity {
   String user_login, first_user_login, second_user_login;
   int count_of_player;
 
+  // Sound
+  SoundPlayer soundPlayer;
+
   @SuppressLint("SetTextI18n")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,9 @@ public class MexicoDiceActivity extends AppCompatActivity {
     }
 
     dbHelper = new DBHelper(this);
+
+    // Sound
+    soundPlayer = new SoundPlayer(this);
 
     r = new Random();
 
@@ -79,6 +85,7 @@ public class MexicoDiceActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
+            soundPlayer.playDiceSound(getApplicationContext());
             // roll the dice
             rolledP1 = r.nextInt(6) + 1;
             setDiceImage(rolledP1, iv_dice_p1);
@@ -126,6 +133,7 @@ public class MexicoDiceActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
+            soundPlayer.playDiceSound(getApplicationContext());
             // roll the dice
             rolledP2 = r.nextInt(6) + 1;
             setDiceImage(rolledP2, iv_dice_p2);
@@ -235,6 +243,7 @@ public class MexicoDiceActivity extends AppCompatActivity {
           });
       AlertDialog alertDialog = alertDialogBuilder.create();
       alertDialog.show();
+      soundPlayer.playWinSound(this);
     }
   }
 

@@ -19,15 +19,20 @@ public class MainActivity extends Activity {
   LinearLayout linearLayout;
   TextView greetingTextView;
 
+  SoundPlayer soundPlayer;
+
   @SuppressLint({"WrongViewCast", "SetTextI18n"})
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    // sound
+    soundPlayer = new SoundPlayer(this);
     // make status bar transparent
     // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     setContentView(R.layout.activiti_main);
     setOnTouchListenerToMainMenuButtons();
     setGreetingTextByTime();
+    soundPlayer.playBackgroundSound(this);
   }
 
   @SuppressLint({"NewApi", "SetTextI18n"})
@@ -36,6 +41,7 @@ public class MainActivity extends Activity {
     greetingTextView = findViewById(R.id.greetingText);
     Calendar calendar = Calendar.getInstance();
     int timeOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
     if (timeOfDay < 12) {
       // morning
       linearLayout.setBackground(getDrawable(R.drawable.morning_bg));
@@ -101,5 +107,4 @@ public class MainActivity extends Activity {
     Intent intent = new Intent(this, PvPLoginActivity.class);
     startActivity(intent);
   }
-
 }
