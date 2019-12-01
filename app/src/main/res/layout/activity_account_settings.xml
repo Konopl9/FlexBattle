@@ -1,9 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AccountSettingsActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/night_bg"
+    android:gravity="top"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/settingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="20sp"
+        android:fontFamily="@font/gothammedium"
+        android:text="Account setting"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#ffffff"
+        tools:ignore="HardcodedText"
+        tools:targetApi="jelly_bean" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profileImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/mexico_dice_icon"
+        app:civ_border_color="#FFF59D"
+        app:civ_border_width="5dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_button_transparent"
+            android:fontFamily="@font/gothammedium"
+            android:gravity="center"
+            android:text="Take photo"
+            android:padding="10dp"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/btnOpenGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/bg_button_transparent"
+            android:fontFamily="@font/gothammedium"
+            android:gravity="center"
+            android:text="Select from gallery"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/editLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_person_black_24dp"
+        android:drawableRight="@drawable/ic_person_black_24dp"
+        android:ems="10"
+        android:hint="Login"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_lock_black_24dp"
+        android:drawableRight="@drawable/ic_lock_black_24dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_email_black_24dp"
+        android:drawableRight="@drawable/ic_email_black_24dp"
+        android:ems="10"
+        android:hint="Email"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_person_black_24dp"
+        android:drawableRight="@drawable/ic_person_black_24dp"
+        android:ems="10"
+        android:hint="Name"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <EditText
+        android:id="@+id/editSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:drawableEnd="@drawable/ic_person_black_24dp"
+        android:drawableRight="@drawable/ic_person_black_24dp"
+        android:ems="10"
+        android:hint="Surname"
+        android:textColorHint="#ffffff"
+        android:textSize="25sp"
+        android:theme="@style/myEditTextStyle"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/applyChanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_transparent"
+            android:text="Apply changes"
+            android:textColor="@drawable/button_text_color"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/cancelChanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_transparent"
+            android:text="Cancel"
+            android:textColor="@drawable/button_text_color"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -145,7 +145,9 @@ public class GamesListActivity extends AppCompatActivity {
     // Handle item selection
     switch (item.getItemId()) {
       case R.id.account_setting_item:
-        // account setting item
+        Intent intent1 = new Intent(this, AccountSettingsActivity.class);
+        intent1.putExtra("USER_LOGIN", user_login);
+        startActivity(intent1);
         return true;
       case R.id.shop_item:
         Intent intent = new Intent(this, GamesShopActivity.class);

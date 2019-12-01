@@ -12,7 +12,9 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".GamesShopActivity"></activity>
+        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".AccountSettings" />
+        <activity android:name=".GamesShopActivity" />
         <activity android:name=".MexicoDiceActivity" />
         <activity android:name=".RockPaperScissorsLizardSpockActivity" />
         <activity android:name=".TicTacToeActivity" />

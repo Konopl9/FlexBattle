@@ -22,7 +22,6 @@ public class PvPLoginActivity extends Activity {
       et_firstPlayerPassword,
       et_secondPlayerLogin,
       et_secondPlayerPassword;
-
   boolean firstPlayerIsReady = false, secondPlayerIsReady = false;
 
   String second_user_login;
@@ -156,7 +155,7 @@ public class PvPLoginActivity extends Activity {
   }
 
   private boolean accountValidation(
-          SQLiteDatabase database, EditText playerLogin, EditText playerPassword) {
+      SQLiteDatabase database, EditText playerLogin, EditText playerPassword) {
     String login = playerLogin.getText().toString().trim();
     String password = playerPassword.getText().toString().trim();
     int cursorCount;

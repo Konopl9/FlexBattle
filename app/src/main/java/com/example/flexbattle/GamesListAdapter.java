@@ -2,6 +2,7 @@ package com.example.flexbattle;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,8 +61,10 @@ public class GamesListAdapter extends ArrayAdapter {
     ImageView imageView = rowView.findViewById(R.id.imgGame);
     nameTextField.setTextSize(19);
     nameTextField.setTypeface(boltTilteFont);
+    nameTextField.setTextColor(Color.parseColor("#FFF59D"));
     infoTextField.setTypeface(bookDescFont);
     infoTextField.setTextSize(15);
+    infoTextField.setTextColor(Color.parseColor("#ffffff"));
 
     // this code sets the values of the objects to values from the arrays
     nameTextField.setText(nameArray[position]);
@@ -73,6 +76,7 @@ public class GamesListAdapter extends ArrayAdapter {
       rowView.setEnabled(true);
     }
     else {
+      rowView.setBackgroundResource(R.drawable.bg_button_transparent);
       rowView.setEnabled(false);
       rowView.setOnClickListener(null);
     }

@@ -5,8 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -103,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
-  //Check if user have enough money and subtract  money
+  // Check if user have enough money and subtract  money
   public static int buyGame(String id, String user_login, SQLiteDatabase database) {
     Cursor c = null;
     int game_id;
@@ -141,15 +145,15 @@ public class DBHelper extends SQLiteOpenHelper {
     c.close();
 
     String query =
-            "SELECT "
-                    + GAME_KEY_ID
-                    + " From "
-                    + TABLE_GAME
-                    + " WHERE "
-                    + GAME_KEY_TITLE
-                    + "='"
-                    + id
-                    + "'";
+        "SELECT "
+            + GAME_KEY_ID
+            + " From "
+            + TABLE_GAME
+            + " WHERE "
+            + GAME_KEY_TITLE
+            + "='"
+            + id
+            + "'";
     c = database.rawQuery(query, null);
     c.moveToFirst();
     game_id = c.getInt(c.getColumnIndex(GAME_KEY_ID));
@@ -175,7 +179,8 @@ public class DBHelper extends SQLiteOpenHelper {
               + game_id
               + "'";
       database.execSQL(query1);
-      query1 = " UPDATE "
+      query1 =
+          " UPDATE "
               + TABLE_USER
               + " SET "
               + USER_KEY_POINTS
@@ -238,6 +243,60 @@ public class DBHelper extends SQLiteOpenHelper {
     return game_state;
   }
 
+  // Load data for settings
+  public static List<String> preloadUserData(SQLiteDatabase database, String user_login) {
+    List<String> userData = new ArrayList<>();
+    Cursor cursor =
+        database.rawQuery(
+            "SELECT * FROM "
+                + DBHelper.TABLE_USER
+                + " WHERE "
+                + DBHelper.USER_KEY_LOGIN
+                + "='"
+                + user_login
+                + "'",
+            null);
+    if (cursor.moveToFirst()) {
+      int user_login_index = cursor.getColumnIndex(DBHelper.USER_KEY_LOGIN);
+      int user_password_index = cursor.getColumnIndex(DBHelper.USER_KEY_PASSWORD);
+      int user_email_index = cursor.getColumnIndex(DBHelper.USER_KEY_EMAIL);
+      int user_name_index = cursor.getColumnIndex(DBHelper.USER_KEY_NAME);
+      int user_surname_index = cursor.getColumnIndex(DBHelper.USER_KEY_SURNAME);
+      int user_avatar_index = cursor.getColumnIndex(DBHelper.USER_KEY_AVATAR_IMAGE);
+      do {
+        userData.add(cursor.getString(user_login_index));
+        userData.add(cursor.getString(user_password_index));
+        userData.add(cursor.getString(user_email_index));
+        userData.add(cursor.getString(user_name_index));
+        userData.add(cursor.getString(user_surname_index));
+        userData.add(cursor.getString(user_avatar_index));
+      } while (cursor.moveToNext());
+    } else Log.d("mLog", "0 rows");
+    cursor.close();
+    return userData;
+  }
+
+  // Insert updated user data
+  public static void applyDataChanges(
+      SQLiteDatabase database, String email, String name, String surname, String login) {
+    ContentValues contentValues = new ContentValues();
+    if (!email.trim().equals("")) {
+      contentValues.put(USER_KEY_EMAIL, email);
+      database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
+      contentValues.clear();
+    }
+    if (!name.trim().equals("")) {
+      contentValues.put(USER_KEY_NAME, name);
+      database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
+      contentValues.clear();
+    }
+    if (!surname.trim().equals("")) {
+      contentValues.put(USER_KEY_SURNAME, surname);
+      database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
+      contentValues.clear();
+    }
+  }
+
   @Override
   public void onCreate(SQLiteDatabase db) {
     db.execSQL(CREATE_TABLE_USER);
@@ -254,7 +313,7 @@ public class DBHelper extends SQLiteOpenHelper {
     db.execSQL("drop table if exists " + TABLE_GAME);
   }
 
-  //insert games
+  // insert games
   public void insertGameIntoTable(SQLiteDatabase database) {
 
     ContentValues contentValues = new ContentValues();
@@ -280,7 +339,6 @@ public class DBHelper extends SQLiteOpenHelper {
     contentValues.put(DBHelper.GAME_KEY_PRICE, 20);
     database.insert(DBHelper.TABLE_GAME, null, contentValues);
     contentValues.clear();
-
   }
 
   // insert test user
