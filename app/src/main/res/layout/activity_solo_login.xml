@@ -101,14 +101,16 @@
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/changePasswordLink"
+    <CheckBox
+        android:id="@+id/checkboxRememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:text="Forgot Password?"
-        android:textColor="#ffff"
+        android:text="Remember me"
+        android:buttonTint="#FFF59D"
+        android:textColor="@drawable/button_text_color"
         android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:targetApi="lollipop" />
 
 </LinearLayout>

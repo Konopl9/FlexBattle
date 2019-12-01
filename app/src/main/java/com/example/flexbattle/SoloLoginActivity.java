@@ -2,7 +2,9 @@ package com.example.flexbattle;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,7 +23,15 @@ public class SoloLoginActivity extends Activity {
 
   EditText et_login, et_password;
 
+  CheckBox cb_rememberMe;
+
   String user_login;
+
+  String user_password;
+
+  // Shared preferences
+  private SharedPreferences sharedPreferences;
+  private SharedPreferences.Editor sharedPreferencesEditor;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +42,15 @@ public class SoloLoginActivity extends Activity {
     et_login = findViewById(R.id.soloLoginInput);
     et_password = findViewById(R.id.soloPasswordInput);
 
+    cb_rememberMe = findViewById(R.id.checkboxRememberMe);
+
     dbHelper = new DBHelper(this);
+
+    // Shared preferences
+    sharedPreferences =
+        getSharedPreferences("flexbattle.com.mySharedPreferences", Context.MODE_PRIVATE);
+    sharedPreferencesEditor = sharedPreferences.edit();
+    checkSharedPreferences();
   }
 
   @SuppressLint("ClickableViewAccessibility")
@@ -73,15 +92,51 @@ public class SoloLoginActivity extends Activity {
                         getApplicationContext(), "WRONG LOGIN OR PASSWORD", Toast.LENGTH_LONG)
                     .show();
               }
+              if(cb_rememberMe.isChecked()){
+                // Save login
+                sharedPreferencesEditor.putString(getString(R.string.login), user_login);
+                sharedPreferencesEditor.commit();
+                // Save password
+                sharedPreferencesEditor.putString(getString(R.string.password), user_password);
+                sharedPreferencesEditor.commit();
+                // Save checkbox
+                sharedPreferencesEditor.putString(getString(R.string.checkbox), "True");
+                sharedPreferencesEditor.commit();
+              }else{
+                // Save login
+                sharedPreferencesEditor.putString(getString(R.string.login), "");
+                sharedPreferencesEditor.commit();
+                // Save password
+                sharedPreferencesEditor.putString(getString(R.string.password), "");
+                sharedPreferencesEditor.commit();
+                // Save checkbox
+                sharedPreferencesEditor.putString(getString(R.string.checkbox), "False");
+                sharedPreferencesEditor.commit();
+              }
             }
             return true;
           }
         });
   }
 
+  private void checkSharedPreferences() {
+    String checkBox = sharedPreferences.getString(getString(R.string.checkbox), "Fasle");
+    String login = sharedPreferences.getString(getString(R.string.login), "");
+    String password = sharedPreferences.getString(getString(R.string.password), "");
+
+    et_login.setText(login);
+    et_password.setText(password);
+
+    if (checkBox.equals("True")) {
+      cb_rememberMe.setChecked(true);
+    } else {
+      cb_rememberMe.setChecked(false);
+    }
+  }
+
   private boolean accountValidation(SQLiteDatabase database) {
     user_login = et_login.getText().toString().trim();
-    String password = et_password.getText().toString().trim();
+    user_password = et_password.getText().toString().trim();
     int cursorCount;
     Cursor mCursor =
         database.rawQuery(
@@ -95,7 +150,7 @@ public class SoloLoginActivity extends Activity {
                 + " AND "
                 + DBHelper.USER_KEY_PASSWORD
                 + "='"
-                + password
+                + user_password
                 + "'",
             null);
     cursorCount = mCursor.getCount();
