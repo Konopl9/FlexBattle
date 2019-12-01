@@ -6,15 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-  public static final int DATABASE_VERSION = 1;
+  public static final int DATABASE_VERSION = 2;
   public static final String DATABASE_NAME = "FlexBattleDb";
 
   public static final String TABLE_USER = "user";
@@ -54,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
           + USER_KEY_SURNAME
           + " VARCHAR(30),"
           + USER_KEY_AVATAR_IMAGE
-          + " VARCHAR(30),"
+          + " BLOB,"
           + USER_KEY_POINTS
           + " INTEGER NOT NULL,"
           + "PRIMARY KEY"
@@ -244,7 +246,8 @@ public class DBHelper extends SQLiteOpenHelper {
   }
 
   // Load data for settings
-  public static List<String> preloadUserData(SQLiteDatabase database, String user_login) {
+  public static Pair<List<String>, byte[]> preloadUserData(SQLiteDatabase database, String user_login) {
+    byte[] img = new byte[0];
     List<String> userData = new ArrayList<>();
     Cursor cursor =
         database.rawQuery(
@@ -269,16 +272,16 @@ public class DBHelper extends SQLiteOpenHelper {
         userData.add(cursor.getString(user_email_index));
         userData.add(cursor.getString(user_name_index));
         userData.add(cursor.getString(user_surname_index));
-        userData.add(cursor.getString(user_avatar_index));
+        img = cursor.getBlob(user_avatar_index);
       } while (cursor.moveToNext());
     } else Log.d("mLog", "0 rows");
     cursor.close();
-    return userData;
+    return new Pair<>(userData, img);
   }
 
   // Insert updated user data
   public static void applyDataChanges(
-      SQLiteDatabase database, String email, String name, String surname, String login) {
+          SQLiteDatabase database, String email, String name, String surname, byte[] bytes, String login) {
     ContentValues contentValues = new ContentValues();
     if (!email.trim().equals("")) {
       contentValues.put(USER_KEY_EMAIL, email);
@@ -292,6 +295,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     if (!surname.trim().equals("")) {
       contentValues.put(USER_KEY_SURNAME, surname);
+      database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
+      contentValues.clear();
+    }
+    if(!(bytes.length == 0)){
+      contentValues.put(USER_KEY_AVATAR_IMAGE, bytes);
       database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
       contentValues.clear();
     }
