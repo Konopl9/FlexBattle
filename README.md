@@ -7,8 +7,8 @@ To play solo or with friends. Collecting coins.
 ## Project main points
 1. Advanced GUI - Lists &#x2611;
 2. Database – SQLite &#x2611;
-3. Signal Processing – Image &#x2611;, Sound 
-4. Multimedia – Audio, Video
-5. Persistent Storage – SharedPreferences
-6. Networking- Facebook
+3. Signal Processing – Image &#x2611;, Sound &#x2611;
+4. Multimedia – Audio &#x2611;
+5. Persistent Storage – SharedPreferences &#x2611;
+6. Networking- Google account &#x2611;
 
