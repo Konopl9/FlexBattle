@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -87,6 +88,9 @@ public class GamesListActivity extends AppCompatActivity {
     // Buffer string to store logged user login and put into listView
     String main_in_game_login;
 
+    //Google data
+
+
     // separate for solo and multilayer
     if (count_of_players == 1) {
       main_in_game_login = user_login;
@@ -145,15 +149,23 @@ public class GamesListActivity extends AppCompatActivity {
     // Handle item selection
     switch (item.getItemId()) {
       case R.id.account_setting_item:
-        Intent intent1 = new Intent(this, AccountSettingsActivity.class);
-        intent1.putExtra("USER_LOGIN", user_login);
-        startActivity(intent1);
-        return true;
+        if (count_of_players == 1) {
+          Intent intent1 = new Intent(this, AccountSettingsActivity.class);
+          intent1.putExtra("USER_LOGIN", user_login);
+          startActivity(intent1);
+          return true;
+        }else{
+          Toast.makeText(this, "Sorry, log in solo", Toast.LENGTH_SHORT).show();
+        }
       case R.id.shop_item:
-        Intent intent = new Intent(this, GamesShopActivity.class);
-        intent.putExtra("USER_LOGIN", user_login);
-        startActivity(intent);
-        return true;
+        if (count_of_players == 1) {
+          Intent intent = new Intent(this, GamesShopActivity.class);
+          intent.putExtra("USER_LOGIN", user_login);
+          startActivity(intent);
+          return true;
+        }else{
+          Toast.makeText(this, "Sorry, log in solo", Toast.LENGTH_SHORT).show();
+        }
       default:
         return super.onOptionsItemSelected(item);
     }

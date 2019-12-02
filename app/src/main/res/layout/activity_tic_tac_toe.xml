@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/night_bg"
     android:orientation="vertical"
     tools:context=".TicTacToeActivity">
 
@@ -16,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Player 1: 0"
             android:textSize="30sp"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <TextView
@@ -25,6 +27,7 @@
             android:layout_below="@+id/text_view_p1"
             android:text="Player 2: 0"
             android:textSize="30sp"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -35,7 +38,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="33dp"
+            android:background="@drawable/bg_button_transparent"
             android:layout_marginRight="33dp"
+            android:textColor="#FFF59D"
             android:text="reset" />
     </RelativeLayout>
 
@@ -50,6 +55,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -58,6 +65,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -66,6 +75,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
     </LinearLayout>
@@ -82,6 +93,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -90,6 +103,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -98,6 +113,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
     </LinearLayout>
@@ -113,6 +130,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -121,6 +140,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
         <Button
@@ -129,6 +150,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="60sp"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:freezesText="true"/>
 
     </LinearLayout>

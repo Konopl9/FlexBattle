@@ -5,7 +5,10 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,12 +17,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegistrationActivity extends Activity implements View.OnClickListener {
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static android.content.ContentValues.TAG;
+
+public class RegistrationActivity extends Activity {
 
   DBHelper dbHelper;
 
   EditText et_login, et_password, et_checkPassword, et_email;
-  Button createAccountButton, createFacebookAccountButton;
+  Button createAccountButton;
+
+  SignInButton useFacebookAccount;
+
+  GoogleSignInClient mGoogleSignInClient;
+
+  int RC_SIGN_IN = 0;
+
+  String user_login;
+
+  byte[] userAvatarImage;
 
   private static boolean isValidEmail(String email) {
     return !TextUtils.isEmpty(email)
@@ -32,9 +64,21 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     setContentView(R.layout.activity_registration);
 
     createAccountButton = findViewById(R.id.createAccountButton);
-    createAccountButton.setOnClickListener(this);
-    createFacebookAccountButton = findViewById(R.id.useFacebookAccount);
-    createFacebookAccountButton.setOnClickListener(this);
+    useFacebookAccount = findViewById(R.id.sign_in_button);
+    createAccountButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            addNewUserButton();
+          }
+        });
+    useFacebookAccount.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            signIn();
+          }
+        });
 
     et_login = findViewById(R.id.loginInput);
     et_password = findViewById(R.id.passwordInput);
@@ -42,54 +86,119 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     et_email = findViewById(R.id.emailRegistration);
 
     dbHelper = new DBHelper(this);
+
+    // Google
+    GoogleSignInOptions gso =
+        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+    mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+  }
+
+  private void signIn() {
+    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+    startActivityForResult(signInIntent, RC_SIGN_IN);
+  }
+
+  private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    try {
+      GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+      // Signed in successfully, show authenticated UI.
+      insertUserGoogleData();
+      // updateUI(account);
+    } catch (ApiException e) {
+      // The ApiException status code indicates the detailed failure reason.
+      // Please refer to the GoogleSignInStatusCodes class reference for more information.
+      Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+      // updateUI(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
-  public void onClick(View v) {
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
+    // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+    if (requestCode == RC_SIGN_IN) {
+      // The Task returned from this call is always completed, no need to attach
+      // a listener.
+      Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+      handleSignInResult(task);
+    }
+  }
+
+  // Google get user data
+  void insertUserGoogleData() throws IOException {
+    GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+    if (acct != null) {
+      String personName = acct.getGivenName();
+      String personFamilyName = acct.getFamilyName();
+      String personEmail = acct.getEmail();
+      Uri personPhoto = acct.getPhotoUrl();
+      // add global login
+      user_login = personName;
+      // convert picture
+
+      // database
+      SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+      if (!isLoginAlreadyExist(personName, database)) {
+        ContentValues contentValues = new ContentValues();
+        DBHelper.addNewGoogleUser(
+            database,
+            personName,
+            personFamilyName,
+            personName,
+            personFamilyName,
+            personEmail,
+            userAvatarImage);
+        sqliteAttachGamesToUser(personName, database, contentValues);
+        contentValues.clear();
+        openGameListActivity();
+      } else {
+        openGameListActivity();
+      }
+    }
+  }
+
+  private void signOut() {
+    mGoogleSignInClient.signOut()
+            .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                // ...
+              }
+            });
+  }
+
+  private void addNewUserButton() {
     String login = et_login.getText().toString();
     String password = et_password.getText().toString();
     String passwordRepeat = et_checkPassword.getText().toString();
     String email = et_email.getText().toString();
-
     SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-    Cursor dbCursor = database.query(DBHelper.TABLE_GAME, null, null, null, null, null, null);
-    String[] columnNames = dbCursor.getColumnNames();
-    for (String column : columnNames) {
-      Log.d("Column=", column);
-    }
-
-
     ContentValues contentValues = new ContentValues();
-
-    switch (v.getId()) {
-      case R.id.createAccountButton:
-        if (isValidLogin(login)) {
-          if (isValidPassword(password, passwordRepeat)) {
-            if (isValidEmail(email)) {
-              if (!isLoginAlreadyExist(login, database)) {
-                sqlliteAddNewUserToDataBase(login, password, email, database, contentValues);
-                sqliteAttachGamesToUser(login, database, contentValues);
-                clearRegistrationField();
-                openSoloLoginActivity();
-              } else {
-                Toast.makeText(getApplicationContext(), "USER ALREADY EXITS", Toast.LENGTH_LONG)
-                    .show();
-              }
-            } else {
-              wrongEmail();
-            }
+    if (isValidLogin(login)) {
+      if (isValidPassword(password, passwordRepeat)) {
+        if (isValidEmail(email)) {
+          if (!isLoginAlreadyExist(login, database)) {
+            sqlliteAddNewUserToDataBase(login, password, email, database, contentValues);
+            sqliteAttachGamesToUser(login, database, contentValues);
+            clearRegistrationField();
+            openSoloLoginActivity();
           } else {
-            wrongPassword();
+            Toast.makeText(getApplicationContext(), "USER ALREADY EXITS", Toast.LENGTH_LONG).show();
           }
         } else {
-          wrongLogin();
+          wrongEmail();
         }
-        break;
-      case R.id.useFacebookAccount:
-        printAllTables(database);
-        break;
+      } else {
+        wrongPassword();
+      }
+    } else {
+      wrongLogin();
     }
   }
 
@@ -157,7 +266,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     if (cursor.moveToFirst()) {
       int idLogin = cursor.getColumnIndex(DBHelper.USER_KEY_LOGIN);
       do {
-        if(cursor.getString(idLogin).equals(login)){
+        if (cursor.getString(idLogin).equals(login)) {
           cursor.close();
           return true;
         }
@@ -176,6 +285,13 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
   private void openSoloLoginActivity() {
     Intent intent = new Intent(this, SoloLoginActivity.class);
+    startActivity(intent);
+  }
+
+  private void openGameListActivity() {
+    Intent intent = new Intent(this, GamesListActivity.class);
+    intent.putExtra("COUNT_OF_PLAYERS", 1);
+    intent.putExtra("PLAYER_LOGIN", user_login);
     startActivity(intent);
   }
 

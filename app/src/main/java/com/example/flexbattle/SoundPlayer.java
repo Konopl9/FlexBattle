@@ -3,14 +3,10 @@ package com.example.flexbattle;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 
 public class SoundPlayer {
-
-  private AudioAttributes audioAttributes;
-  final int SOUND_POOL_MAX = 10;
 
   private static SoundPool soundPool;
   private static int rockSound;
@@ -23,8 +19,14 @@ public class SoundPlayer {
   private static int diceSound;
   private static int winSound;
   private static int backgroundSound;
+  final int SOUND_POOL_MAX = 10;
+  Context context;
+  private AudioAttributes audioAttributes;
 
   public SoundPlayer(Context context) {
+
+    this.context = context;
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       AudioAttributes audioAttributes =
           new AudioAttributes.Builder()
@@ -33,7 +35,10 @@ public class SoundPlayer {
               .build();
 
       soundPool =
-          new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(SOUND_POOL_MAX).build();
+          new SoundPool.Builder()
+              .setAudioAttributes(audioAttributes)
+              .setMaxStreams(SOUND_POOL_MAX)
+              .build();
     } else {
       soundPool = new SoundPool(SOUND_POOL_MAX, AudioManager.STREAM_MUSIC, 0);
     }
@@ -51,62 +56,42 @@ public class SoundPlayer {
   }
 
   public void playRockSound(Context context) {
-    //soundPool.play(rockSound, 1, 1, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.rock);
-    mp.start();
+    soundPool.play(rockSound, 1, 1, 1, 0, 1.0f);
   }
 
   public void playPaperSound(Context context) {
-    //soundPool.play(paperSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.paper);
-    mp.start();
+    soundPool.play(paperSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playScissorsSound(Context context) {
-    //soundPool.play(scissorsSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.scissors);
-    mp.start();
+    soundPool.play(scissorsSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playLizardSound(Context context) {
-    //soundPool.play(lizardSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.lizard);
-    mp.start();
+    soundPool.play(lizardSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playSpockSound(Context context) {
-    //soundPool.play(spockSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.spock);
-    mp.start();
+    soundPool.play(spockSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playCrossSound(Context context) {
-    //soundPool.play(crossSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.cross);
-    mp.start();
+    soundPool.play(crossSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playCircleSound(Context context) {
-    //soundPool.play(circleSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.circle);
-    mp.start();
+    soundPool.play(circleSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playDiceSound(Context context) {
-    //soundPool.play(diceSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.dice);
-    mp.start();
+    soundPool.play(diceSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playWinSound(Context context) {
-    //soundPool.play(winSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.win);
-    mp.start();
+    soundPool.play(winSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 
   public void playBackgroundSound(Context context) {
-    //soundPool.play(backgroundSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    final MediaPlayer mp = MediaPlayer.create(context, R.raw.background);
-    mp.start();
+    soundPool.play(backgroundSound, 1.0f, 1.0f, 1, 0, 1.0f);
   }
 }

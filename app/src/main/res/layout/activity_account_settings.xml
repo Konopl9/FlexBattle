@@ -176,7 +176,7 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="@drawable/bg_button_transparent"
-            android:text="Cancel"
+            android:text="Logout Google"
             android:textColor="@drawable/button_text_color"
             tools:ignore="HardcodedText" />
     </LinearLayout>

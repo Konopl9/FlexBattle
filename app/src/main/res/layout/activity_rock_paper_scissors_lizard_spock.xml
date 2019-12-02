@@ -8,6 +8,7 @@
     android:paddingTop="5dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
+    android:background="@drawable/night_bg"
     tools:context=".RockPaperScissorsLizardSpockActivity">
 
     <LinearLayout
@@ -47,30 +48,40 @@
             android:text="ROCK"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/spock"
             android:text="SPOCK"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/paper"
             android:text="PAPER"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/lizard"
             android:text="LIZARD"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/scissors"
             android:text="SCISSOR"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_button_transparent"
+            android:textColor="#FFF59D"
             android:layout_weight="1"/>
     </LinearLayout>
 

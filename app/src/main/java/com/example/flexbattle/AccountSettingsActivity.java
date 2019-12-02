@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,9 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,6 +44,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
   String user_login;
 
   Bitmap selectedPicture;
+
+  GoogleSignInClient mGoogleSignInClient;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +96,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            finish();
+            signOut();
           }
         });
 
@@ -114,6 +121,23 @@ public class AccountSettingsActivity extends AppCompatActivity {
             startActivityForResult(intent, OPEN_GALLERY_CODE);
           }
         });
+  }
+
+  private void signOut() {
+    GoogleSignInOptions gso =
+        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+    mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    mGoogleSignInClient
+        .signOut()
+        .addOnCompleteListener(
+            this,
+            new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+              }
+            });
   }
 
   @Override
@@ -146,7 +170,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
   }
 
-  private void putLoadedDataToTextEdit(Pair<List<String>,byte[]> a) {
+  private void putLoadedDataToTextEdit(Pair<List<String>, byte[]> a) {
 
     List<String> userData = a.first;
     byte[] b = a.second;
@@ -156,7 +180,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
     String email = userData.get(2);
     String name = userData.get(3);
     String surname = userData.get(4);
-
 
     if (login != null) et_login.setText(login);
     if (password != null) et_password.setText(password);

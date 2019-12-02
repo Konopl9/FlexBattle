@@ -200,7 +200,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
   }
 
-  // check if user dont have this game already
+  // check if user don't have this game already
   public static int checkIfGameIsAlreadyBought(
       String game_title, String user_login, SQLiteDatabase database) {
     Cursor c = null;
@@ -303,6 +303,20 @@ public class DBHelper extends SQLiteOpenHelper {
       database.update(TABLE_USER, contentValues, USER_KEY_LOGIN + "='" + login + "'", null);
       contentValues.clear();
     }
+  }
+
+  //Insert new google account user
+  public static void addNewGoogleUser(SQLiteDatabase database, String login, String password, String name, String surname, String email, byte[] avatarImage){
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(DBHelper.USER_KEY_LOGIN, login);
+    contentValues.put(DBHelper.USER_KEY_PASSWORD, password);
+    contentValues.put(DBHelper.USER_KEY_EMAIL, email);
+    contentValues.put(DBHelper.USER_KEY_NAME, name);
+    contentValues.put(DBHelper.USER_KEY_SURNAME, surname);
+    contentValues.put(DBHelper.USER_KEY_AVATAR_IMAGE, avatarImage);
+    contentValues.put(DBHelper.USER_KEY_POINTS, 0);
+    database.insert(DBHelper.TABLE_USER, null, contentValues);
+    contentValues.clear();
   }
 
   @Override
