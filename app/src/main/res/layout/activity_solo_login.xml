@@ -37,11 +37,11 @@
         tools:targetApi="jelly_bean" />
 
     <EditText
-        android:id="@+id/loginInput"
+        android:id="@+id/soloLoginInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:drawableEnd="@drawable/ic_person_black_24dp"
         android:drawableRight="@drawable/ic_person_black_24dp"
@@ -54,7 +54,7 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/soloPasswordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -101,14 +101,16 @@
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/changePasswordLink"
+    <CheckBox
+        android:id="@+id/checkboxRememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:text="Forgot Password?"
-        android:textColor="#ffff"
+        android:text="Remember me"
+        android:buttonTint="#FFF59D"
+        android:textColor="@drawable/button_text_color"
         android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:targetApi="lollipop" />
 
 </LinearLayout>

@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.flexbattle">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +18,13 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".RegistrationActivity"></activity>
+        <activity android:name=".AccountSettingsActivity" />
+        <activity android:name=".GamesShopActivity" />
+        <activity android:name=".MexicoDiceActivity" />
+        <activity android:name=".RockPaperScissorsLizardSpockActivity" />
+        <activity android:name=".TicTacToeActivity" />
+        <activity android:name=".GamesListActivity" />
+        <activity android:name=".RegistrationActivity" />
         <activity android:name=".PvPLoginActivity" />
         <activity android:name=".SoloLoginActivity" />
         <activity android:name=".MainActivity">
@@ -23,5 +35,25 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
+
+
+
+
 
 </manifest>

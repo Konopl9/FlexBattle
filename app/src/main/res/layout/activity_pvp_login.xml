@@ -39,7 +39,7 @@
         tools:targetApi="jelly_bean" />
 
     <EditText
-        android:id="@+id/loginInput"
+        android:id="@+id/firstPlayerLoginInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -56,7 +56,7 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/firstPlayerPasswordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -87,7 +87,7 @@
         tools:targetApi="jelly_bean" />
 
     <EditText
-        android:id="@+id/loginInput1"
+        android:id="@+id/secondPlayerLoginInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -104,7 +104,7 @@
         tools:ignore="DuplicateIds,HardcodedText" />
 
     <EditText
-        android:id="@+id/passwordInput1"
+        android:id="@+id/secondPlayerPasswordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -153,7 +153,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/registrationButton"
+        android:id="@+id/verifyBothPlayerButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
